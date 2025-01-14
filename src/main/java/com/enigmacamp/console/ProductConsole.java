@@ -1,17 +1,17 @@
 package com.enigmacamp.console;
 
 import com.enigmacamp.entitiy.Product;
-import com.enigmacamp.repository.ProductRepository;
+import com.enigmacamp.service.ProductService;
 import com.enigmacamp.utils.InputHandler;
 
 import java.util.List;
 
 public class ProductConsole {
-    private ProductRepository repository;
+    private ProductService productService;
     private InputHandler inputHandler;
 
-    public ProductConsole(ProductRepository repository, InputHandler inputHandler){
-        this.repository = repository;
+    public ProductConsole(ProductService productService, InputHandler inputHandler){
+        this.productService = productService;
         this.inputHandler = inputHandler;
     }
 
@@ -58,11 +58,11 @@ public class ProductConsole {
         Integer productPrice = this.inputHandler.getInt("Price : ");
 
         Product product = new Product(productName, productPrice);
-        this.repository.create(product);
+        this.productService.create(product);
     }
 
     private void getAllProducts(){
-        List<Product> products = this.repository.getAll();
+        List<Product> products = this.productService.getAll();
 
         if (products.isEmpty()){
             System.out.println("No Products Available");
@@ -81,7 +81,7 @@ public class ProductConsole {
 
     private void getProductById(){
         Integer askId = this.inputHandler.getInt("Input ID Product: ");
-        Product product = this.repository.get(askId);
+        Product product = this.productService.get(askId);
 
         // header
         System.out.printf("\n|%-5s |%-20s |%-10s\n", "ID","Name","Price");
@@ -96,12 +96,12 @@ public class ProductConsole {
         Integer productPrice = this.inputHandler.getInt("Price : ");
 
         Product product = new Product(productName, productPrice);
-        this.repository.update(product, productId);
+        this.productService.update(product, productId);
     }
 
     private void deleteProductById() {
         Integer askId = this.inputHandler.getInt("Input ID Product: ");
-        this.repository.delete(askId);
+        this.productService.delete(askId);
         getAllProducts();
     }
 

@@ -2,11 +2,13 @@ package com.enigmacamp.entitiy.dto.request;
 
 public class TransactionDetailRequest {
     private Integer productId;
+    private Integer price;
     private Integer qty;
 
-    public TransactionDetailRequest(Integer qty, Integer productId) {
-        this.qty = qty;
+    public TransactionDetailRequest(Integer productId, Integer price, Integer qty) {
         this.productId = productId;
+        this.price = price;
+        this.qty = qty;
     }
 
     public Integer getProductId() {
@@ -15,6 +17,14 @@ public class TransactionDetailRequest {
 
     public void setProductId(Integer productId) {
         this.productId = productId;
+    }
+
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 
     public Integer getQty() {

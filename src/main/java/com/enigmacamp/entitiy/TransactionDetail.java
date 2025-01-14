@@ -11,18 +11,18 @@ public class TransactionDetail {
 
     @ManyToOne
     @JoinColumn(name = "transaction_id", nullable = false)
-    private Transaction transaction;
+    private Transaction transactionId;
 
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
-    private Product product;
+    private Product productId;
 
     private Integer qty;
     private Integer price;
 
-    public TransactionDetail(Transaction transaction, Product product, Integer qty, Integer price) {
-        this.transaction = transaction;
-        this.product = product;
+    public TransactionDetail(Transaction transactionId, Product productId, Integer qty, Integer price) {
+        this.transactionId = transactionId;
+        this.productId = productId;
         this.qty = qty;
         this.price = price;
     }
@@ -37,20 +37,20 @@ public class TransactionDetail {
         this.id = id;
     }
 
-    public Transaction getTransaction() {
-        return transaction;
+    public Transaction getTransactionId() {
+        return transactionId;
     }
 
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
+    public void setTransactionId(Transaction transactionId) {
+        this.transactionId = transactionId;
     }
 
-    public Product getProduct() {
-        return product;
+    public Product getProductId() {
+        return productId;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductId(Product productId) {
+        this.productId = productId;
     }
 
     public Integer getQty() {
@@ -67,5 +67,16 @@ public class TransactionDetail {
 
     public void setPrice(Integer price) {
         this.price = price;
+    }
+
+    @Override
+    public String toString() {
+        return "TransactionDetail{" +
+                "id=" + id +
+                ", transactionId=" + transactionId +
+                ", productId=" + productId +
+                ", qty=" + qty +
+                ", price=" + price +
+                '}';
     }
 }

@@ -1,19 +1,19 @@
 package com.enigmacamp.console;
 
-import com.enigmacamp.repository.ProductRepository;
-import com.enigmacamp.repository.TransactionRepository;
+import com.enigmacamp.service.ProductService;
+import com.enigmacamp.service.TransactionService;
 import com.enigmacamp.utils.InputHandler;
 
 public class TransactionConsole {
     CustomerConsole customerConsole;
-    ProductRepository productRepository;
-    TransactionRepository transactionRepository;
+    ProductService productService;
+    TransactionService transactionService;
     InputHandler inputHandler;
 
-    public TransactionConsole(CustomerConsole customerConsole, ProductRepository productRepository, TransactionRepository transactionRepository, InputHandler inputHandler) {
+    public TransactionConsole(CustomerConsole customerConsole, ProductService productService, TransactionService transactionService, InputHandler inputHandler) {
         this.customerConsole = customerConsole;
-        this.productRepository = productRepository;
-        this.transactionRepository = transactionRepository;
+        this.productService = productService;
+        this.transactionService = transactionService;
         this.inputHandler = inputHandler;
     }
 

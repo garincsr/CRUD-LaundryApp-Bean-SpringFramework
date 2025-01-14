@@ -15,22 +15,19 @@ public class Transaction {
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
+    private Customer customerId;
     private LocalDate date;
 
     @Column(name = "is_picked")
     private Boolean isPicked;
 
-    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
-    private List<TransactionDetail> transactionDetails;
+    public Transaction() {}
 
-    public Transaction(Customer customer, LocalDate date, Boolean isPicked) {
-        this.customer = customer;
+    public Transaction(Customer customerId, LocalDate date, Boolean isPicked) {
+        this.customerId = customerId;
         this.date = date;
         this.isPicked = isPicked;
     }
-
-    public Transaction() {}
 
     public Integer getId() {
         return id;
@@ -40,12 +37,12 @@ public class Transaction {
         this.id = id;
     }
 
-    public Customer getCustomer() {
-        return customer;
+    public Customer getCustomerId() {
+        return customerId;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
+    public void setCustomerId(Customer customerId) {
+        this.customerId = customerId;
     }
 
     public LocalDate getDate() {
@@ -64,22 +61,13 @@ public class Transaction {
         isPicked = picked;
     }
 
-    public List<TransactionDetail> getTransactionDetails() {
-        return transactionDetails;
-    }
-
-    public void setTransactionDetails(List<TransactionDetail> transactionDetails) {
-        this.transactionDetails = transactionDetails;
-    }
-
     @Override
     public String toString() {
         return "Transaction{" +
                 "id=" + id +
-                ", customer=" + customer +
+                ", customerId=" + customerId +
                 ", date=" + date +
                 ", isPicked=" + isPicked +
-                ", transactionDetails=" + transactionDetails +
                 '}';
     }
 }
