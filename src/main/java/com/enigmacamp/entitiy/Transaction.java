@@ -3,6 +3,7 @@ package com.enigmacamp.entitiy;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "transaction")
@@ -19,6 +20,9 @@ public class Transaction {
 
     @Column(name = "is_picked")
     private Boolean isPicked;
+
+    @OneToMany(mappedBy = "transaction", cascade = CascadeType.ALL)
+    private List<TransactionDetail> transactionDetails;
 
     public Transaction(Customer customer, LocalDate date, Boolean isPicked) {
         this.customer = customer;
@@ -58,5 +62,24 @@ public class Transaction {
 
     public void setPicked(Boolean picked) {
         isPicked = picked;
+    }
+
+    public List<TransactionDetail> getTransactionDetails() {
+        return transactionDetails;
+    }
+
+    public void setTransactionDetails(List<TransactionDetail> transactionDetails) {
+        this.transactionDetails = transactionDetails;
+    }
+
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "id=" + id +
+                ", customer=" + customer +
+                ", date=" + date +
+                ", isPicked=" + isPicked +
+                ", transactionDetails=" + transactionDetails +
+                '}';
     }
 }

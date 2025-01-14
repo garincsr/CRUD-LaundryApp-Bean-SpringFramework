@@ -1,7 +1,7 @@
 package com.enigmacamp.repository.impl;
 
 import com.enigmacamp.entitiy.Customer;
-import com.enigmacamp.repository.CustomerService;
+import com.enigmacamp.repository.CustomerRepository;
 import com.enigmacamp.utils.custom_exception.PhoneNumberAlreadyExistsException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
@@ -9,10 +9,10 @@ import jakarta.persistence.EntityTransaction;
 
 import java.util.List;
 
-public class CustomerServiceImpl implements CustomerService {
+public class CustomerRepositoryImpl implements CustomerRepository {
     private final EntityManager em;
 
-    public CustomerServiceImpl(EntityManager em) {
+    public CustomerRepositoryImpl(EntityManager em) {
         this.em = em;
     }
 
@@ -32,13 +32,11 @@ public class CustomerServiceImpl implements CustomerService {
         // Validasi phone number unique
         validatePhoneFormat(payload.getPhoneNumber());
 
-        // Mengambil entitas Customer yang ada berdasarkan ID
         Customer existingCustomer = em.find(Customer.class, id);
         if (existingCustomer == null) {
             throw new EntityNotFoundException("Customer with ID " + id + " not found");
         }
 
-        // Mulai transaksi dan simpan perubahan
         EntityTransaction tx = em.getTransaction();
         tx.begin();
         em.merge(payload);

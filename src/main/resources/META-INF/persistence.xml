@@ -14,7 +14,9 @@
 
         <!-- Entity -->
         <class>com.enigmacamp.entitiy.Customer</class>
+        <class>com.enigmacamp.entitiy.Product</class>
         <class>com.enigmacamp.entitiy.Transaction</class>
+        <class>com.enigmacamp.entitiy.TransactionDetail</class>
 
         <properties>
             <!-- database connection -->

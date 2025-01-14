@@ -1,15 +1,28 @@
 package com.enigmacamp.entitiy;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "trx_details")
 public class TransactionDetail {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private Integer transactionId;
-    private Integer productId;
+
+    @ManyToOne
+    @JoinColumn(name = "transaction_id", nullable = false)
+    private Transaction transaction;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
+
     private Integer qty;
     private Integer price;
 
-    public TransactionDetail(Integer transactionId, Integer productId, Integer qty, Integer price) {
-        this.transactionId = transactionId;
-        this.productId = productId;
+    public TransactionDetail(Transaction transaction, Product product, Integer qty, Integer price) {
+        this.transaction = transaction;
+        this.product = product;
         this.qty = qty;
         this.price = price;
     }
@@ -24,20 +37,20 @@ public class TransactionDetail {
         this.id = id;
     }
 
-    public Integer getTransactionId() {
-        return transactionId;
+    public Transaction getTransaction() {
+        return transaction;
     }
 
-    public void setTransactionId(Integer transactionId) {
-        this.transactionId = transactionId;
+    public void setTransaction(Transaction transaction) {
+        this.transaction = transaction;
     }
 
-    public Integer getProductId() {
-        return productId;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
     public Integer getQty() {

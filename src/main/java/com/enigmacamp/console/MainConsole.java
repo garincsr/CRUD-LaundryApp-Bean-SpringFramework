@@ -5,10 +5,12 @@ import com.enigmacamp.utils.InputHandler;
 public class MainConsole {
     private InputHandler inputHandler;
     private CustomerConsole customerConsole;
+    private ProductConsole productConsole;
 
-    public MainConsole(InputHandler inputHandler, CustomerConsole customerConsole) {
+    public MainConsole(InputHandler inputHandler, CustomerConsole customerConsole, ProductConsole productConsole) {
         this.inputHandler = inputHandler;
         this.customerConsole = customerConsole;
+        this.productConsole = productConsole;
     }
 
     private void showMenu(){
@@ -25,7 +27,7 @@ public class MainConsole {
             int choice = inputHandler.getInt("Pilih menu: ");
             switch (choice){
                 case 1:
-//                    this.productConsole.run();
+                    this.productConsole.run();
                     break;
                 case 2:
                     this.customerConsole.run();

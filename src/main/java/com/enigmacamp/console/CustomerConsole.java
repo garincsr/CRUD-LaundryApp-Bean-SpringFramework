@@ -1,7 +1,7 @@
 package com.enigmacamp.console;
 
 import com.enigmacamp.entitiy.Customer;
-import com.enigmacamp.repository.CustomerService;
+import com.enigmacamp.repository.CustomerRepository;
 import com.enigmacamp.utils.InputHandler;
 import com.enigmacamp.utils.custom_exception.PhoneNumberAlreadyExistsException;
 
@@ -10,11 +10,11 @@ import java.text.ParseException;
 import java.util.List;
 
 public class CustomerConsole {
-    private CustomerService service;
+    private CustomerRepository repository;
     private InputHandler inputHandler;
 
-    public CustomerConsole(CustomerService service, InputHandler inputHandler) {
-        this.service = service;
+    public CustomerConsole(CustomerRepository respository, InputHandler inputHandler) {
+        this.repository = respository;
         this.inputHandler = inputHandler;
     }
 
@@ -67,14 +67,14 @@ public class CustomerConsole {
         Customer customer = new Customer(customerName,customerAddress,customerPhoneNumber,birthDate);
 
         try {
-            service.create(customer);
+            this.repository.create(customer);
         } catch (PhoneNumberAlreadyExistsException e) {
             throw new RuntimeException(e);
         }
     }
 
     private void getAllCustomer(){
-        List<Customer> customers = service.getAll();
+        List<Customer> customers = this.repository.getAll();
 
         if(customers.isEmpty()){
             System.out.println("No Customers Available");
@@ -97,7 +97,7 @@ public class CustomerConsole {
 
     private void getCustomerById(){
         Integer askId = this.inputHandler.getInt("Masukkan ID Customer: ");
-        Customer customer = this.service.get(askId);
+        Customer customer = this.repository.get(askId);
 
         // header
         System.out.printf("\n|%-5s |%-20s |%-20s |%-20s |%-20s\n", "ID","Name","Address","Phone Number","Birth Date");
@@ -129,11 +129,11 @@ public class CustomerConsole {
 
     public Customer getCustomerByPhoneNumberHandler(){
         String askPhoneNumber = this.inputHandler.getString("Input Customer Phone Number: ");
-        return this.service.getByPhone(askPhoneNumber);
+        return this.repository.getByPhone(askPhoneNumber);
     }
 
 
-    public Customer updateCustomer(){
+    public void updateCustomer(){
         Integer customerId = this.inputHandler.getInt("Customer ID: ");
         String customerName = this.inputHandler.getString("Customer Name: ");
         String customerAddress = this.inputHandler.getString("Customer Address: ");
@@ -143,12 +143,11 @@ public class CustomerConsole {
 
         Customer customer = new Customer(customerName,customerAddress,customerPhoneNumber,birthDate);
         try {
-            this.service.update(customer,customerId);
+            this.repository.update(customer,customerId);
         } catch (PhoneNumberAlreadyExistsException | ParseException e) {
             throw new RuntimeException(e);
         }
 
-        return customer;
     }
 }
 
