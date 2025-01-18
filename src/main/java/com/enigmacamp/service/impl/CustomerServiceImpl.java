@@ -4,11 +4,16 @@ import com.enigmacamp.entitiy.Customer;
 import com.enigmacamp.repository.CustomerRepository;
 import com.enigmacamp.service.CustomerService;
 import com.enigmacamp.utils.custom_exception.PhoneNumberAlreadyExistsException;
+import jakarta.persistence.EntityManager;
 
 import java.util.List;
 
 public class CustomerServiceImpl implements CustomerService {
-    private final CustomerRepository customerRepository = new CustomerRepository();
+    private CustomerRepository customerRepository;
+
+    public CustomerServiceImpl(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
 
     @Override
     public void create(Customer payload) throws PhoneNumberAlreadyExistsException {

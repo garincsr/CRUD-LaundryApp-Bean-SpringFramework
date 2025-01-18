@@ -1,7 +1,5 @@
 package com.enigmacamp.entitiy;
-
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -15,7 +13,8 @@ public class Transaction {
 
     @ManyToOne
     @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customerId;
+    private Customer customer;
+    @Column()
     private LocalDate date;
 
     @Column(name = "is_picked")
@@ -23,10 +22,10 @@ public class Transaction {
 
     public Transaction() {}
 
-    public Transaction(Customer customerId, LocalDate date, Boolean isPicked) {
-        this.customerId = customerId;
-        this.date = date;
-        this.isPicked = isPicked;
+    public Transaction(Customer customer) {
+        this.customer = customer;
+        this.date = LocalDate.now();
+        this.isPicked = false;
     }
 
     public Integer getId() {
@@ -37,12 +36,12 @@ public class Transaction {
         this.id = id;
     }
 
-    public Customer getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(Customer customerId) {
-        this.customerId = customerId;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     public LocalDate getDate() {
@@ -65,7 +64,7 @@ public class Transaction {
     public String toString() {
         return "Transaction{" +
                 "id=" + id +
-                ", customerId=" + customerId +
+                ", customer=" + customer +
                 ", date=" + date +
                 ", isPicked=" + isPicked +
                 '}';

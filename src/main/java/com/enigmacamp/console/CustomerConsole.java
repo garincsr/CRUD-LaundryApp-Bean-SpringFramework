@@ -58,6 +58,16 @@ public class CustomerConsole {
     }
 
     private void createNewCustomer(){
+        Customer customerCreated = createCustomerHandler();
+
+        if (customerCreated == null){
+            throw new RuntimeException("Failed to insert customer data");
+        }
+        System.out.println("Customer created!");
+        System.out.println("Wellcome " + customerCreated.getName());
+    }
+
+    public Customer createCustomerHandler(){
         String customerName = this.inputHandler.getString("Customer Name: ");
         String customerAddress = this.inputHandler.getString("Customer Address: ");
         String customerPhoneNumber = this.inputHandler.getPhoneNumber("Phone Number (Phone number starting with '+'): ");
@@ -65,12 +75,12 @@ public class CustomerConsole {
         Date birthDate = Date.valueOf(customerBirthDate);
 
         Customer customer = new Customer(customerName,customerAddress,customerPhoneNumber,birthDate);
-
         try {
             this.customerService.create(customer);
         } catch (PhoneNumberAlreadyExistsException e) {
-            System.out.println(e.getMessage());;
+            System.out.println(e.getMessage());
         }
+        return customer;
     }
 
     private void getAllCustomer(){

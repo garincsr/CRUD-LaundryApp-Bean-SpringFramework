@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 @Entity
+@Table(name = "products")
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -14,7 +15,6 @@ public class Product {
     private Integer price;
 
 //    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
-
 //    private List<TransactionDetail> transactionDetails;
     public Product() {}
 

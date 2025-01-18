@@ -10,10 +10,10 @@ import java.util.List;
 
 public interface TransactionService {
     void createTransaction(TransactionRequest transactionRequest);
-    void createTransactionDetails(int transactionId, TransactionDetailRequest transactionDetailRequest);
-    TransactionResponse getTransactionById(int transactionId);
+    void createTransactionDetails(TransactionDetailRequest transactionDetailRequest, Transaction transaction);
+    TransactionResponse getTransactionById(Integer transactionId);
     List<TransactionResponse> getAllTransactions();
-    List<TransactionDetailResponse> getAllTransactionDetails(Transaction transaction);
+    List<TransactionDetailResponse> getAllTransactionDetails(Integer transactionId);
 //    List<TransactionDetailResponse> getTransactionDetailByTransactionId(int transactionId);
 }
 

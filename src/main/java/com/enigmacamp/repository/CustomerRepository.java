@@ -1,13 +1,18 @@
 package com.enigmacamp.repository;
 
 import com.enigmacamp.entitiy.Customer;
+import com.enigmacamp.service.CustomerService;
+import com.enigmacamp.utils.JpaUtils;
 import jakarta.persistence.*;
 
 import java.util.List;
 
 public class CustomerRepository {
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("enigma-persistence");
-    EntityManager em = emf.createEntityManager();
+    private EntityManager em;
+
+    public CustomerRepository(EntityManager em) {
+        this.em = em;
+    }
 
     public void save(Customer payload){
         EntityTransaction tx = em.getTransaction();

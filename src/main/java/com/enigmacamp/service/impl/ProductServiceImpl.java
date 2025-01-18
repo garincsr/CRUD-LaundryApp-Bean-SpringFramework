@@ -7,7 +7,11 @@ import com.enigmacamp.service.ProductService;
 import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
-    ProductRepository productRepository = new ProductRepository();
+    private ProductRepository productRepository;
+
+    public ProductServiceImpl(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
 
     @Override
     public void create(Product payload) {

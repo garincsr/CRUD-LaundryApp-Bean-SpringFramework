@@ -6,11 +6,13 @@ public class MainConsole {
     private InputHandler inputHandler;
     private CustomerConsole customerConsole;
     private ProductConsole productConsole;
+    private TransactionConsole transactionConsole;
 
-    public MainConsole(InputHandler inputHandler, CustomerConsole customerConsole, ProductConsole productConsole) {
+    public MainConsole(InputHandler inputHandler, CustomerConsole customerConsole, ProductConsole productConsole, TransactionConsole transactionConsole) {
         this.inputHandler = inputHandler;
         this.customerConsole = customerConsole;
         this.productConsole = productConsole;
+        this.transactionConsole = transactionConsole;
     }
 
     private void showMenu(){
@@ -33,7 +35,7 @@ public class MainConsole {
                     this.customerConsole.run();
                     break;
                 case 3:
-//                    this.transactionConsole.run();
+                    this.transactionConsole.run();
                     break;
                 case 4:
                     return;

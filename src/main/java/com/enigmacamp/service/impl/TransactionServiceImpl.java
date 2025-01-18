@@ -20,28 +20,31 @@ import jakarta.persistence.EntityTransaction;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TransactionServiceImpl {
-    private CustomerRepository customerRepository = new CustomerRepository();
-    private ProductRepository productRepository = new ProductRepository();
-    private TransactionRepository transactionRepository = new TransactionRepository();
-    private TransactionDetailRepository transactionDetailRepository = new TransactionDetailRepository();
+public class TransactionServiceImpl implements TransactionService {
+    private CustomerRepository customerRepository;
+    private ProductRepository productRepository;
+    private TransactionRepository transactionRepository;
+    private TransactionDetailRepository transactionDetailRepository;
 
-    public TransactionServiceImpl(CustomerRepository customerRepository, ProductRepository productRepository, TransactionRepository transactionRepository) {
+    public TransactionServiceImpl(CustomerRepository customerRepository, ProductRepository productRepository, TransactionRepository transactionRepository, TransactionDetailRepository transactionDetailRepository) {
         this.customerRepository = customerRepository;
         this.productRepository = productRepository;
         this.transactionRepository = transactionRepository;
+        this.transactionDetailRepository = transactionDetailRepository;
     }
 
-    public Integer createTransaction(TransactionRequest transactionRequest) {
-        Transaction transaction = new Transaction();
-        transaction.setCustomerId(customerRepository.findById(transactionRequest.getCustomerId()));
+    public void createTransaction(TransactionRequest transactionRequest) {
+        Customer customer = customerRepository.findById(transactionRequest.getCustomerId());
+        Transaction transaction = new Transaction(customer);
         transactionRepository.save(transaction);
 
         for (TransactionDetailRequest details : transactionRequest.getTrxDetails()){
             createTransactionDetails(details, transaction);
         }
 
-        return transaction.getId();
+        //Cetak Struk
+        TransactionResponse transactionResponse = getTransactionById(transaction.getId());
+        transactionReceipt(transactionResponse);
     }
 
     public void createTransactionDetails(TransactionDetailRequest transactionDetailRequest, Transaction transaction) {
@@ -55,31 +58,74 @@ public class TransactionServiceImpl {
         transactionDetailRepository.save(transactionDetail);
     }
 
-    public TransactionResponse getTransactionById(int transactionId) {
-//        TransactionResponse transactionResponse = new TransactionResponse();
-//        Transaction transaction = transactionRepository.findById(transactionId);
-//
-//        transactionResponse.setDate(transaction.getDate().toString());
-//        transactionResponse.setCustomerName(transaction.getCustomerId().getName());
-//        transactionResponse.setPhoneNumber(transaction.getCustomerId().getPhoneNumber());
-//        transactionResponse.setTrxDetails();
+    public TransactionResponse getTransactionById(Integer transactionId) {
+        TransactionResponse transactionResponse = new TransactionResponse();
+        Transaction transaction = transactionRepository.findById(transactionId);
+        List<TransactionDetailResponse> getTrxDetails = getAllTransactionDetails(transactionId);
+        System.out.println(transaction);
 
-        return null;
+        transactionResponse.setDate(transaction.getDate().toString());
+        transactionResponse.setCustomerName(transaction.getCustomer().getName());
+        transactionResponse.setPhoneNumber(transaction.getCustomer().getPhoneNumber());
+        transactionResponse.setTrxDetails(getTrxDetails);
+
+        Integer total = getTotal(getTrxDetails);
+
+        transactionResponse.setTotal(total);
+
+        return transactionResponse;
+    }
+
+    private static Integer getTotal(List<TransactionDetailResponse> getTrxDetails) {
+        Integer total = getTrxDetails.stream()
+                .mapToInt(TransactionDetailResponse::getSubTotal)
+                .sum();
+        return total;
     }
 
 
     public List<TransactionResponse> getAllTransactions(){
-//        return em.createQuery("select t from Transaction t", TransactionResponse.class).getResultList();
-        return null;
+        List<TransactionResponse> transactionResponses = new ArrayList<>();
+        List<Transaction> transactions = transactionRepository.findAll();
+
+        for (Transaction transaction : transactions){
+            TransactionResponse transactionResponse = new TransactionResponse();
+            String transactionDate = transaction.getDate().toString();
+            transactionResponse.setDate(transactionDate);
+            transactionResponse.setCustomerName(transaction.getCustomer().getName());
+            transactionResponse.setPhoneNumber(transaction.getCustomer().getPhoneNumber());
+            transactionResponse.setPicked(transaction.getPicked());
+            transactionResponse.setTrxDetails(getAllTransactionDetails(transaction.getId()));
+
+            Integer total = getAllTransactionDetails(transaction.getId()).stream()
+                    .mapToInt(e -> e.getProductPrice() * e.getQty())
+                    .sum();
+
+            transactionResponse.setTotal(total);
+
+            transactionResponses.add(transactionResponse);
+        }
+        return transactionResponses;
     }
 
 
     public List<TransactionDetailResponse> getAllTransactionDetails(Integer transactionId) {
-//        Transaction transaction = transactionRepository.findById(transactionId);
-//        List<TransactionDetail> get =
-//        List<TransactionDetailResponse> detailResponses = new ArrayList<>();
-
-        return null;
+        Transaction transaction = transactionRepository.findById(transactionId);
+        List<TransactionDetail> transactionDetails = transactionDetailRepository.findByTransactionId(transaction);
+        
+        List<TransactionDetailResponse> detailResponses = new ArrayList<>();
+        for (TransactionDetail transactionDetail : transactionDetails){
+            
+            TransactionDetailResponse transactionDetailResponse = new TransactionDetailResponse();
+            transactionDetailResponse.setProductName(transactionDetail.getProductId().getName());
+            transactionDetailResponse.setProductPrice(transactionDetail.getPrice());
+            transactionDetailResponse.setQty(transactionDetail.getQty());
+            transactionDetailResponse.setSubTotal(transactionDetail.getPrice() * transactionDetail.getQty());
+            
+            detailResponses.add(transactionDetailResponse);
+        }
+        
+        return detailResponses;
     }
 
     public void transactionReceipt(TransactionResponse transactionResponse){
