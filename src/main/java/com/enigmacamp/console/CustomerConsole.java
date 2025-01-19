@@ -3,7 +3,7 @@ package com.enigmacamp.console;
 import com.enigmacamp.entitiy.Customer;
 import com.enigmacamp.service.CustomerService;
 import com.enigmacamp.utils.InputHandler;
-import com.enigmacamp.utils.custom_exception.PhoneNumberAlreadyExistsException;
+import com.enigmacamp.utils.custom_exception.InvalidPhoneNumberFormat;
 
 import java.sql.Date;
 import java.text.ParseException;
@@ -77,7 +77,7 @@ public class CustomerConsole {
         Customer customer = new Customer(customerName,customerAddress,customerPhoneNumber,birthDate);
         try {
             this.customerService.create(customer);
-        } catch (PhoneNumberAlreadyExistsException e) {
+        } catch (InvalidPhoneNumberFormat e) {
             System.out.println(e.getMessage());
         }
         return customer;
@@ -96,13 +96,14 @@ public class CustomerConsole {
         );
         System.out.println("-------------------------------------------------------------------------------------------");
         customers.stream()
-                .forEach(customer -> System.out.printf("|%-5s |%-20s |%-20s |%-20s |%-15s|\n\n",
+                .forEach(customer -> System.out.printf("|%-5s |%-20s |%-20s |%-20s |%-15s|\n",
                         customer.getId(),
                         customer.getName(),
                         customer.getAddress(),
                         customer.getPhoneNumber(),
                         customer.getBirthDate()
                 ));
+        System.out.println();
     }
 
     private void getCustomerById(){
@@ -154,7 +155,7 @@ public class CustomerConsole {
         Customer customer = new Customer(customerName,customerAddress,customerPhoneNumber,birthDate);
         try {
             this.customerService.update(customer,customerId);
-        } catch (PhoneNumberAlreadyExistsException | ParseException e) {
+        } catch (ParseException | InvalidPhoneNumberFormat e) {
             throw new RuntimeException(e);
         }
 

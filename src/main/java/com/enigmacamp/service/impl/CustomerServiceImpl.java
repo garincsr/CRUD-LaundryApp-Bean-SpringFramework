@@ -3,8 +3,7 @@ package com.enigmacamp.service.impl;
 import com.enigmacamp.entitiy.Customer;
 import com.enigmacamp.repository.CustomerRepository;
 import com.enigmacamp.service.CustomerService;
-import com.enigmacamp.utils.custom_exception.PhoneNumberAlreadyExistsException;
-import jakarta.persistence.EntityManager;
+import com.enigmacamp.utils.custom_exception.InvalidPhoneNumberFormat;
 
 import java.util.List;
 
@@ -16,14 +15,14 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void create(Customer payload) throws PhoneNumberAlreadyExistsException {
+    public void create(Customer payload) throws InvalidPhoneNumberFormat {
         validatePhoneFormat(payload.getPhoneNumber());
 
         this.customerRepository.save(payload);
     }
 
     @Override
-    public void update(Customer payload, Integer id) throws PhoneNumberAlreadyExistsException {
+    public void update(Customer payload, Integer id) throws InvalidPhoneNumberFormat {
         validatePhoneFormat(payload.getPhoneNumber());
 
         this.customerRepository.merge(payload, id);
@@ -50,11 +49,11 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     // Validation
-    private void validatePhoneFormat(String phoneNumber) throws PhoneNumberAlreadyExistsException {
+    private void validatePhoneFormat(String phoneNumber) throws InvalidPhoneNumberFormat {
         // Cek apakah mengandung huruf
         // di database phone number sudah dibuat unique
         if (!phoneNumber.matches("^[\\+\\d]*$")) {
-            throw new PhoneNumberAlreadyExistsException("Invalid phone number. Phone number must contain '+' and doesnt contain alphabet.");
+            throw new InvalidPhoneNumberFormat("Invalid phone number. Phone number must contain '+' and doesnt contain alphabet.");
         }
     }
 

@@ -3,35 +3,27 @@
              xmlns="http://xmlns.jcp.org/xml/ns/persistence"
              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
-     http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+             http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
 
-    <persistence-unit
-            name="enigma-persistence">
-
+    <persistence-unit name="enigma-persistence">
         <description>
             Enigma Laundry JPA
         </description>
 
         <!-- Entity -->
-        <class>com.enigmacamp.entitiy.Customer</class>
-        <class>com.enigmacamp.entitiy.Product</class>
-        <class>com.enigmacamp.entitiy.Transaction</class>
-        <class>com.enigmacamp.entitiy.TransactionDetail</class>
+        <class>com.enigmacamp.entity.Customer</class>
+        <class>com.enigmacamp.entity.Product</class>
+        <class>com.enigmacamp.entity.Transaction</class>
+        <class>com.enigmacamp.entity.TransactionDetail</class>
 
         <properties>
-            <!-- database connection -->
-            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver" />
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/enigma_laundry" />
-            <property name="jakarta.persistence.jdbc.user" value="" />
-            <property name="jakarta.persistence.jdbc.password" value="" />
-
-            <!--            Auto Migrate-->
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+<!--            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/${DB_NAME}"/>-->
+<!--            <property name="jakarta.persistence.jdbc.user" value=""/>-->
+<!--            <property name="jakarta.persistence.jdbc.password" value=""/>-->
             <property name="hibernate.hbm2ddl.auto" value="update"/>
-
             <property name="hibernate.show_sql" value="false"/>
             <property name="hibernate.format_sql" value="true"/>
-
         </properties>
-
     </persistence-unit>
 </persistence>

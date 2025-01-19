@@ -1,5 +1,6 @@
 package com.enigmacamp;
 
+import com.enigmacamp.config.MainConfig;
 import com.enigmacamp.console.CustomerConsole;
 import com.enigmacamp.console.MainConsole;
 import com.enigmacamp.console.ProductConsole;
@@ -17,30 +18,21 @@ import com.enigmacamp.service.impl.TransactionServiceImpl;
 import com.enigmacamp.utils.InputHandler;
 import com.enigmacamp.utils.JpaUtils;
 import jakarta.persistence.EntityManager;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Wellcome");
-        EntityManager em = JpaUtils.getEntityManager();
-        //REPOSITORY
-        CustomerRepository customerRepository = new CustomerRepository(em);
-        ProductRepository productRepository = new ProductRepository(em);
-        TransactionRepository transactionRepository = new TransactionRepository(em);
-        TransactionDetailRepository transactionDetailRepository = new TransactionDetailRepository(em);
+        System.out.println("=== Wellcome ===");
 
-        //SERVICE
-        CustomerService customerService = new CustomerServiceImpl(customerRepository);
-        ProductService productService = new ProductServiceImpl(productRepository);
-        TransactionService transactionService = new TransactionServiceImpl(customerRepository,productRepository,transactionRepository,transactionDetailRepository);
+        // Memuat konteks Spring
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
 
-        //INPUT HANDLER
-        InputHandler inputHandler = new InputHandler();
+        // Mendapatkan MainConsole dari konteks Spring
+        MainConsole mainConsole = context.getBean(MainConsole.class);
 
-        //CONSOLE
-        CustomerConsole customerConsole = new CustomerConsole(customerService, inputHandler);
-        ProductConsole productConsole = new ProductConsole(productService, inputHandler);
-        TransactionConsole transactionConsole = new TransactionConsole(customerConsole,productService,transactionService,inputHandler);
-        MainConsole mainConsole = new MainConsole(inputHandler,customerConsole,productConsole,transactionConsole);
+        // Menjalankan MainConsole
         mainConsole.run();
     }
 }

@@ -13,7 +13,7 @@ public class Customer {
     private String name;
     private String address;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone_number", unique = true)
     private String phoneNumber;
 
     @Column(name = "birth_date")

@@ -1,0 +1,75 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/context
+                           http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- JpaUtils Bean -->
+    <bean id="jpaUtils" class="com.enigmacamp.utils.JpaUtils"/>
+
+    <!-- EntityManager Bean -->
+    <bean id="entityManager" factory-method="getEntityManager" class="com.enigmacamp.utils.JpaUtils"/>
+
+    <!-- Repositories -->
+    <bean id="customerRepository" class="com.enigmacamp.repository.CustomerRepository">
+        <constructor-arg ref="entityManager"/>
+    </bean>
+
+    <bean id="productRepository" class="com.enigmacamp.repository.ProductRepository">
+        <constructor-arg ref="entityManager"/>
+    </bean>
+
+    <bean id="transactionRepository" class="com.enigmacamp.repository.TransactionRepository">
+        <constructor-arg ref="entityManager"/>
+    </bean>
+
+    <bean id="transactionDetailRepository" class="com.enigmacamp.repository.TransactionDetailRepository">
+        <constructor-arg ref="entityManager"/>
+    </bean>
+
+    <!-- Services -->
+    <bean id="customerService" class="com.enigmacamp.service.impl.CustomerServiceImpl">
+        <constructor-arg ref="customerRepository"/>
+    </bean>
+
+    <bean id="productService" class="com.enigmacamp.service.impl.ProductServiceImpl">
+        <constructor-arg ref="productRepository"/>
+    </bean>
+
+    <bean id="transactionService" class="com.enigmacamp.service.impl.TransactionServiceImpl">
+        <constructor-arg ref="customerRepository"/>
+        <constructor-arg ref="productRepository"/>
+        <constructor-arg ref="transactionRepository"/>
+        <constructor-arg ref="transactionDetailRepository"/>
+    </bean>
+
+    <!-- Input Handler -->
+    <bean id="inputHandler" class="com.enigmacamp.utils.InputHandler"/>
+
+    <!-- Consoles -->
+    <bean id="customerConsole" class="com.enigmacamp.console.CustomerConsole">
+        <constructor-arg ref="customerService"/>
+        <constructor-arg ref="inputHandler"/>
+    </bean>
+
+    <bean id="productConsole" class="com.enigmacamp.console.ProductConsole">
+        <constructor-arg ref="productService"/>
+        <constructor-arg ref="inputHandler"/>
+    </bean>
+
+    <bean id="transactionConsole" class="com.enigmacamp.console.TransactionConsole">
+        <constructor-arg ref="customerConsole"/>
+        <constructor-arg ref="productService"/>
+        <constructor-arg ref="transactionService"/>
+        <constructor-arg ref="inputHandler"/>
+    </bean>
+
+    <bean id="mainConsole" class="com.enigmacamp.console.MainConsole">
+        <constructor-arg ref="inputHandler"/>
+        <constructor-arg ref="customerConsole"/>
+        <constructor-arg ref="productConsole"/>
+        <constructor-arg ref="transactionConsole"/>
+    </bean>
+</beans>
