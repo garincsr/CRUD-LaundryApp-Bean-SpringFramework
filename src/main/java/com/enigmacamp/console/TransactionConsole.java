@@ -2,8 +2,10 @@ package com.enigmacamp.console;
 
 import com.enigmacamp.entitiy.Customer;
 import com.enigmacamp.entitiy.Product;
+import com.enigmacamp.entitiy.TransactionDetail;
 import com.enigmacamp.entitiy.dto.request.TransactionDetailRequest;
 import com.enigmacamp.entitiy.dto.request.TransactionRequest;
+import com.enigmacamp.entitiy.dto.response.TransactionResponse;
 import com.enigmacamp.service.CustomerService;
 import com.enigmacamp.service.ProductService;
 import com.enigmacamp.service.TransactionService;
@@ -43,7 +45,7 @@ public class TransactionConsole {
                         isContinue = false;
                         break;
                     case 2:
-//                        this.viewTransactions();
+                        this.viewTransactions();
                         break;
                     case 3:
                         return;
@@ -168,5 +170,29 @@ public class TransactionConsole {
 
         return new TransactionDetailRequest(product.getId(),product.getPrice(),askProductQty);
     }
+
+    private void viewTransactions() {
+        System.out.println("=== View Transactions ===");
+
+        // Header
+        System.out.printf("\n|%-20s |%-15s |%-15s |%-17s |%-10s|\n",
+                "Customer Name", "Phone Number", "Transaction Date", "Picked Status", "Total");
+        System.out.println("-----------------------------------------------------------------------------------------");
+
+        // Mendapatkan semua transaksi
+        List<TransactionResponse> allTransactions = transactionService.getAllTransactions();
+
+        // Menampilkan detail setiap transaksi
+        allTransactions.forEach(transaction -> System.out.printf(
+                "|%-20s |%-15s |%-15s |%-17s |%-10s|\n",
+                transaction.getCustomerName(),
+                transaction.getPhoneNumber(),
+                transaction.getDate(),
+                transaction.getPicked(),
+                transaction.getTotal()
+        ));
+        System.out.println();
+    }
+
 
 }

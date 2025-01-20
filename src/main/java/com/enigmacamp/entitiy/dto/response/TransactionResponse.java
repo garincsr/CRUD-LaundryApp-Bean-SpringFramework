@@ -57,5 +57,17 @@ public class TransactionResponse {
     public void setTotal(Integer total) {
         this.total = total;
     }
+
+    @Override
+    public String toString() {
+        return "TransactionResponse{" +
+                "date='" + date + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", isPicked=" + isPicked +
+                ", trxDetails=" + trxDetails +
+                ", total=" + total +
+                '}';
+    }
 }
 

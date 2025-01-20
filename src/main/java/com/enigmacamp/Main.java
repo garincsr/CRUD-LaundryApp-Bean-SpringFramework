@@ -1,6 +1,6 @@
 package com.enigmacamp;
 
-import com.enigmacamp.config.MainConfig;
+import com.enigmacamp.config.AppConfig;
 import com.enigmacamp.console.CustomerConsole;
 import com.enigmacamp.console.MainConsole;
 import com.enigmacamp.console.ProductConsole;
@@ -26,13 +26,16 @@ public class Main {
     public static void main(String[] args) {
         System.out.println("=== Wellcome ===");
 
-        // Memuat konteks Spring
+        // Menggunakan XML Configuration
         ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
-
-        // Mendapatkan MainConsole dari konteks Spring
         MainConsole mainConsole = context.getBean(MainConsole.class);
 
+        // Menggunakan Annotaion Configuration
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+        MainConsole mainConsoleApp = applicationContext.getBean(MainConsole.class);
+
         // Menjalankan MainConsole
-        mainConsole.run();
+//        mainConsole.run();
+        mainConsoleApp.run();
     }
 }
