@@ -175,7 +175,7 @@ public class TransactionConsole {
         System.out.println("=== View Transactions ===");
 
         // Header
-        System.out.printf("\n|%-20s |%-15s |%-15s |%-17s |%-10s|\n",
+        System.out.printf("\n|%-20s |%-15s |%-18s |%-15s |%-10s|\n",
                 "Customer Name", "Phone Number", "Transaction Date", "Picked Status", "Total");
         System.out.println("-----------------------------------------------------------------------------------------");
 
@@ -184,7 +184,7 @@ public class TransactionConsole {
 
         // Menampilkan detail setiap transaksi
         allTransactions.forEach(transaction -> System.out.printf(
-                "|%-20s |%-15s |%-15s |%-17s |%-10s|\n",
+                "|%-20s |%-15s |%-18s |%-15s |%-10s|\n",
                 transaction.getCustomerName(),
                 transaction.getPhoneNumber(),
                 transaction.getDate(),
